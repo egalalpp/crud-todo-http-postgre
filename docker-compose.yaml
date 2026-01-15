@@ -1,0 +1,31 @@
+services:
+  postgres_db:
+    image: postgres:18-bookworm
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: egor
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: todo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # ВАЖНО: для 18 версии убираем /data в конце пути внутри контейнера
+      - ./pgdata_18:/var/lib/postgresql 
+
+  application:
+    build: .
+    container_name: application-crud
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_db
+    environment:
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_USER=egor
+      - DB_PASSWORD=pass
+      - DB_NAME=todo_db
+      - DB_SSLMODE=disable
+      - SERVER_PORT=8080
+    # Даем базе 5 секунд, чтобы она успела создать структуру папок 18-й версии
+    command: sh -c "sleep 5 && /app/exe"
