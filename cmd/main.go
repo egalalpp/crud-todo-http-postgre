@@ -47,6 +47,11 @@ func main() {
 	r.HandleFunc("/tasks/{id}", handler.UpdateHandler).Methods("PUT")
 	r.HandleFunc("/tasks/{id}", handler.DeleteHandler).Methods("DELETE")
 
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+		http.ServeFile(w, r, "./index.html")
+	}).Methods("GET")
+
 	sugar.Info("Сервер запущен на :8080")
 	log.Fatal(http.ListenAndServe(":8080", corsMiddleware(r)))
 }

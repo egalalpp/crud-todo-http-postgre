@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 .env
 .env.local
@@ -12,6 +12,8 @@ obj/
 
 *.log
 
+pgdata_18/
+**/pgdata_18/
 
 .vscode/
 .idea/
